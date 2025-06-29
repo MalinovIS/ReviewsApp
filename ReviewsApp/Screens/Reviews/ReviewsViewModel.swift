@@ -50,6 +50,10 @@ private extension ReviewsViewModel {
             let data = try result.get()
             let reviews = try decoder.decode(Reviews.self, from: data)
             state.items += reviews.items.map(makeReviewItem)
+            
+            let reviewCountText = "\(reviews.count) отзывов"
+                .attributed(font: .reviewCount, color: .reviewCount)
+            state.items.append(ReviewCountCellConfig(reviewCountText: reviewCountText))
             state.offset += state.limit
             state.shouldLoad = state.offset < reviews.count
         } catch {

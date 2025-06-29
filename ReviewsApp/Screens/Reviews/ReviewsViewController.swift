@@ -39,7 +39,8 @@ private extension ReviewsViewController {
     }
 
     func setupViewModel() {
-        viewModel.onStateChange = { [weak reviewsView] _ in
+        viewModel.onStateChange = { [weak self, weak reviewsView] _ in
+            guard let self = self else { return }
             reviewsView?.tableView.reloadData()
         }
     }
