@@ -45,8 +45,12 @@ final class RatingRenderer {
     ) {
         self.config = config
         self.imageRenderer = imageRenderer
+        self.imageCache.countLimit = 10
     }
-
+    
+    deinit {
+        imageCache.removeAllObjects()
+    }
 }
 
 // MARK: - Internal
@@ -93,5 +97,4 @@ private extension RatingRenderer {
         }
         return renderedImage
     }
-
 }
