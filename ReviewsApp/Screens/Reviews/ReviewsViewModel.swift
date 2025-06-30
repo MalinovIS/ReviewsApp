@@ -89,12 +89,12 @@ private extension ReviewsViewModel {
         let created = review.created.attributed(font: .created, color: .created)
         let item = ReviewItem(
             fullName: fullName,
-            reviewText: reviewText, 
+            reviewText: reviewText,
             rating: review.rating,
             created: created,
             onTapShowMore: { [weak self] id in
-                    self?.showMoreReview(with: id)
-                }
+                self?.showMoreReview(with: id)
+            }
         )
         return item
     }
