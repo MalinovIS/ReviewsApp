@@ -49,6 +49,7 @@ private extension ReviewsViewModel {
         do {
             let data = try result.get()
             let reviews = try decoder.decode(Reviews.self, from: data)
+            state.items.removeAll { $0 is ReviewCountCellConfig }
             state.items += reviews.items.map(makeReviewItem)
             
             let reviewCountText = "\(reviews.count) отзывов"
@@ -91,7 +92,9 @@ private extension ReviewsViewModel {
             reviewText: reviewText, 
             rating: review.rating,
             created: created,
-            onTapShowMore: showMoreReview
+            onTapShowMore: { [weak self] id in
+                    self?.showMoreReview(with: id)
+                }
         )
         return item
     }

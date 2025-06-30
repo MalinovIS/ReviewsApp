@@ -68,9 +68,9 @@ private final class ReviewCountCellLayout {
         let labelSize = config.reviewCountText.boundingRect(width: width).size
         
         reviewCountLabelFrame = CGRect(
-            x: insets.left,
+            x: insets.left + (width - labelSize.width) / 2 ,
             y: (Self.height - labelSize.height) / 2,
-            width: width,
+            width: labelSize.width,
             height: labelSize.height
         )
         
