@@ -2,7 +2,7 @@ import UIKit
 
 /// Класс, описывающий бизнес-логику экрана отзывов.
 final class ReviewsViewModel: NSObject {
-
+    
     /// Замыкание, вызываемое при изменении `state`.
     var onStateChange: ((State) -> Void)?
 

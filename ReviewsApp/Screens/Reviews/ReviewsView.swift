@@ -1,8 +1,26 @@
 import UIKit
 
-final class ReviewsView: UIView {
+protocol DisplaysReviews: UIView {
+    var delegate: ReviewsViewDelegate? { get set }
+    
+    func reloadTableView()
+    func startLoader()
+    func stopLoader()
+}
 
-    let tableView = UITableView()
+protocol ReviewsViewDelegate: AnyObject {
+    
+    func returnConfig() -> ReviewsViewModel
+}
+
+final class ReviewsView: UIView {
+    weak var delegate: ReviewsViewDelegate? {
+        didSet {
+            configureTableView()
+        }
+    }
+    private let tableView = UITableView()
+    private let loader = UIActivityIndicatorView(style: .large)
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -16,10 +34,28 @@ final class ReviewsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         tableView.frame = bounds.inset(by: safeAreaInsets)
+        loader.frame = bounds.inset(by: safeAreaInsets)
     }
 
 }
 
+extension ReviewsView: DisplaysReviews {
+    func startLoader() {
+        loader.startAnimating()
+        print("Start loader")
+    }
+    
+    func stopLoader() {
+        loader.stopAnimating()
+        print("Stop loader")
+    }
+    
+    
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
+}
 // MARK: - Private
 
 private extension ReviewsView {
@@ -27,6 +63,7 @@ private extension ReviewsView {
     func setupView() {
         backgroundColor = .systemBackground
         setupTableView()
+        setupLoader()
     }
 
     func setupTableView() {
@@ -35,6 +72,18 @@ private extension ReviewsView {
         tableView.allowsSelection = false
         tableView.register(ReviewCell.self, forCellReuseIdentifier: ReviewCellConfig.reuseId)
         tableView.register(ReviewCountCell.self, forCellReuseIdentifier: ReviewCountCellConfig.reuseId)
+    }
+    
+    func setupLoader() {
+        addSubview(loader)
+    }
+    
+    func configureTableView() {
+        guard let delegate else {
+            return
+        }
+        tableView.delegate = delegate.returnConfig()
+        tableView.dataSource = delegate.returnConfig()
     }
 
 }

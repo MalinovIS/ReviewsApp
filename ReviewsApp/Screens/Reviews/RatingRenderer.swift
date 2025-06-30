@@ -97,4 +97,5 @@ private extension RatingRenderer {
         }
         return renderedImage
     }
+    
 }
